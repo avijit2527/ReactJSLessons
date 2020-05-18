@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
-import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 'reactstrap';
+import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
 
 class Dishdetail extends Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
-        console.log(this.props.selectedDish)
-        const dish = this.props.selectedDish;
+        console.log(this.props.dish)
+        const dish = this.props.dish;
 
         if (dish) {
             var commentsView = dish.comments.map((comment) => {
@@ -20,7 +17,7 @@ class Dishdetail extends Component {
                             </div>
                             <div className='row m-1'>
                                 <div>
-                                    -- {comment.author}, {comment.date}
+                                    -- {comment.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).format(new Date(Date.parse(comment.date)))}
                                 </div>
                             </div>
                         </li>
@@ -33,23 +30,26 @@ class Dishdetail extends Component {
 
 
         return dish ? (
-            <>
-                <div className="col col-12 col-md-5 m-1">
-                    <Card>
-                        <CardImg width="100%" object src={dish.image} alt={dish.name} />
-                        <CardBody>
-                            <CardTitle>{dish.name}</CardTitle>
-                            <CardText>{dish.description}</CardText>
-                        </CardBody>
-                    </Card>
+            <div className='container'>
+                <div className="row">
+                    <div className="col col-12 col-md-5 m-1">
+                        <Card>
+                            <CardImg width="100%" object src={dish.image} alt={dish.name} />
+                            <CardBody>
+                                <CardTitle>{dish.name}</CardTitle>
+                                <CardText>{dish.description}</CardText>
+                            </CardBody>
+                        </Card>
+                    </div>
+                    <div className="col col-12 col-md-5 m-1">
+                        <div className='h2'>comments</div>
+                        <ul className="list-unstyled">
+                            {commentsView}
+                        </ul>
+                    </div>
                 </div>
-                <div className="col col-12 col-md-5 m-1">
-                    <div className='h2'>comments</div>
-                    <ul className="list-unstyled">
-                        {commentsView}
-                    </ul>
-                </div>
-            </>
+
+            </div>
         ) : <div></div>
     }
 }
